@@ -1,0 +1,20 @@
+export const DASHBOARD_STATUS_ORDER = [
+  { key: "enquiry", title: "Enquiry", color: "bg-[#f44336]" },
+  { key: "prospect", title: "Prospect", color: "bg-[#ff9800]" },
+  { key: "enrollment", title: "Enrollment", color: "bg-[#ffc107]" },
+  {
+    key: "trainingprogress",
+    title: "Training Progress",
+    color: "bg-[#00c853]",
+  },
+  { key: "handsonproject", title: "Hands-on Project", color: "bg-[#2879ff]" },
+  { key: "certification", title: "Certification", color: "bg-[#e91e63]" },
+  { key: "cvbuild", title: "CV Build", color: "bg-[#6a1b9a]" },
+  { key: "mockinterviews", title: "Mock Interviews", color: "bg-[#00bcd4]" },
+  { key: "liveinterviews", title: "Live Interviews", color: "bg-[#607d8b]" },
+  { key: "placement", title: "Placement", color: "bg-[#43a047]" },
+  { key: "placementdue", title: "Placement Due", color: "bg-[#795548]" },
+  { key: "placementpaid", title: "Placement Paid", color: "bg-[#009688]" },
+  { key: "finishers", title: "Finishers", color: "bg-[#8bc34a]" },
+  { key: "onhold", title: "On Hold", color: "bg-[#757575]" },
+];

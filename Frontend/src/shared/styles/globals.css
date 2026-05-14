@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 15px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 100vh;
+}
+
+body {
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+* {
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif !important;
+}
+
+#root {
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+/* Slim scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  /* vertical scrollbar width */
+  height: 6px;
+  /* horizontal scrollbar height */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  /* gray-400 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+  /* gray-500 */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox support */
+* {
+  scrollbar-width: thin;
+  /* "auto" | "thin" */
+  scrollbar-color: #9ca3af transparent;
+}
+
+.filter-scroll {
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.filter-scroll:hover {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5f5 transparent;
+}
+
+.filter-scroll::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.filter-scroll:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-scroll:hover::-webkit-scrollbar-thumb {
+  background: #cbd5f5;
+  border-radius: 9999px;
+}
+
+/* Utility to hide scrollbar but allow scrolling */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sidebar scrollbar - show only on hover */
+.sidebar-scroll {
+  /* Override global scrollbar styles - Hide by default */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera by default */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 0px !important;
+  background: transparent !important;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+
+/* Show scrollbar on hover */
+.sidebar-scroll:hover {
+  /* Show scrollbar for Firefox on hover */
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent !important;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar {
+  width: 6px !important;
+  background: transparent !important;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5) !important;
+  border-radius: 3px !important;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7) !important;
+}
+
+/* Force Inter font for sidebar - must come after global Poppins rule */
+.sidebar-inter,
+.sidebar-inter *,
+.sidebar-inter span,
+.sidebar-inter h1,
+.sidebar-inter h2,
+.sidebar-inter h3,
+.sidebar-inter h4,
+.sidebar-inter h5,
+.sidebar-inter h6,
+.sidebar-inter p,
+.sidebar-inter a,
+.sidebar-inter li,
+.sidebar-inter div {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+.italic-content {
+  font-style: italic;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.italic-content::before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  color: #6366f1;
+  font-weight: bold;
+}
+
+.italic-content::after {
+  content: '"';
+  color: #6366f1;
+  font-weight: bold;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Lead card follow-up pin (outside panel) */
+@keyframes followup-ring {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.07);
+    filter: brightness(1.12);
+  }
+}
+
+@keyframes followup-soft {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.92;
+  }
+}
+
+/* Bell + mini runner hop (Chrome offline dino–style bounce) */
+@keyframes followup-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes followup-dino-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Follow-up mascot (penguin / teddy) — gentle waddle + bob */
+@keyframes followup-mascot-waddle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2.5deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(-1px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(2.5deg);
+  }
+}
+
+@keyframes followup-mascot-waddle-soft {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(1deg);
+  }
+}
+
+@keyframes followup-wing-flap {
+  0%,
+  100% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes followup-wing-flap-right {
+  0%,
+  100% {
+    transform: rotate(14deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+}

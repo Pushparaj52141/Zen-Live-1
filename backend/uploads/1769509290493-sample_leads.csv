@@ -1,0 +1,2 @@
+name,mobile_number,course_id,status,unit_id,card_type_id,email,role_id,college_company,location,source_id,batch_id,trainer_id,actual_fee,discounted_fee,fee_paid,paid_status,user_id
+John Doe,9876543210,COURSE_001,enquiry,UNIT_UUID_HERE,CARD_TYPE_UUID_HERE,john@example.com,ROLE_ID,Example College,New York,SOURCE_ID,BATCH_ID,TRAINER_ID,10000,9000,5000,partially paid,USER_ID

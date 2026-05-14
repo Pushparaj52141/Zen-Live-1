@@ -1,0 +1,452 @@
+.hall-of-fame-container {
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+    background: radial-gradient(circle at top right, #fdfbff 0%, #f0f4f8 100%),
+        radial-gradient(circle at bottom left, #e0e7ff 0%, transparent 50%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hall-of-fame-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 10;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hall-of-fame-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #1e293b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.hall-of-fame-subtitle {
+    color: #475569;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.fame-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 10;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fame-tab-btn {
+    padding: 0.8rem 2.2rem;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.fame-tab-btn:hover {
+    transform: translateY(-2px);
+    background: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.fame-tab-btn.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+}
+
+.fame-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2.5rem;
+    position: relative;
+    z-index: 10;
+    padding: 1rem;
+}
+
+.fame-card {
+    position: relative;
+    border-radius: 30px;
+    padding: 2.2rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: white;
+    box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: cardAppear 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.fame-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            transparent);
+    transition: 0.5s;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.fame-card:hover::after {
+    left: 100%;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Category Specific Card Styles - Vibrant gradients */
+.fame-card.placement {
+    background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+    border: 1px solid #d1fae5;
+}
+
+.fame-card.placement:hover {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.2);
+}
+
+.fame-card.topper {
+    background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+    border: 1px solid #fde68a;
+}
+
+.fame-card.topper:hover {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    box-shadow: 0 20px 40px -15px rgba(245, 158, 11, 0.2);
+}
+
+.fame-card.employee {
+    background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+    border: 1px solid #ddd6fe;
+}
+
+.fame-card.employee:hover {
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.2);
+}
+
+.fame-card:hover {
+    transform: translateY(-12px) scale(1.03);
+}
+
+.card-badge {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: space;
+    margin-bottom: 1.8rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Glowing rings for avatars */
+.placement .avatar-wrapper {
+    background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+}
+
+.topper .avatar-wrapper {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.employee .avatar-wrapper {
+    background: linear-gradient(135deg, #818cf8 0%, #4f46e5 100%);
+    box-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
+}
+
+.avatar-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0.3;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+}
+
+.fame-initials-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 5px solid white;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fame-initials-avatar.placement {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.fame-initials-avatar.topper {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.fame-initials-avatar.employee {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+.initial-text {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: white;
+    z-index: 10;
+    letter-spacing: -2px;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: scaleInitials 2s ease-in-out infinite alternate;
+}
+
+@keyframes scaleInitials {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.15);
+    }
+}
+
+.initials-shine {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    animation: spinShine 4s linear infinite;
+    z-index: 5;
+}
+
+@keyframes spinShine {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.initials-glow {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: pulseGlow 2s ease-in-out infinite;
+    z-index: 4;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: scale(0.95);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fame-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    background: #f8fafc;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fame-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.4rem;
+}
+
+.fame-info {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 1.2rem;
+}
+
+.fame-detail {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0.6rem 1.2rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #334155;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.fame-card.placement .fame-detail {
+    color: #065f46;
+    background: #ecfdf5;
+}
+
+.fame-card.topper .fame-detail {
+    color: #92400e;
+    background: #fffbeb;
+}
+
+.fame-card.employee .fame-detail {
+    color: #3730a3;
+    background: #f5f3ff;
+}
+
+/* Sprinkles / Confetti styles */
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.sprinkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+.crown-icon {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-10deg);
+    font-size: 2rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    z-index: 10;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0) rotate(-10deg);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-10px) rotate(5deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .hall-of-fame-title {
+        font-size: 2.5rem;
+    }
+
+    .fame-grid {
+        grid-template-columns: 1fr;
+    }
+}

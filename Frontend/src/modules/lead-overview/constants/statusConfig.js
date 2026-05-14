@@ -1,0 +1,34 @@
+import {
+  FaArchive,
+  FaBriefcase,
+  FaCertificate,
+  FaChalkboardTeacher,
+  FaCheckCircle,
+  FaFileAlt,
+  FaLaptopCode,
+  FaMoneyBillWave,
+  FaPauseCircle,
+  FaUserCheck,
+  FaUserGraduate,
+  FaUserPlus,
+  FaUserTie,
+} from "react-icons/fa";
+
+export const STATUS_CONFIG = [
+  { key: "enquiry", title: "Enquiry", bgColor: "bg-[#f44336]", icon: FaUserPlus, group: "Acquisition" },
+  { key: "prospect", title: "Prospect", bgColor: "bg-[#ff9800]", icon: FaUserCheck, group: "Acquisition" },
+  { key: "enrollment", title: "Enrollment", bgColor: "bg-[#ffc107]", icon: FaUserGraduate, group: "Acquisition" },
+  { key: "trainingprogress", title: "Training Progress", bgColor: "bg-[#00c853]", icon: FaChalkboardTeacher, group: "Training" },
+  { key: "handsonproject", title: "Hands-on Project", bgColor: "bg-[#2879ff]", icon: FaLaptopCode, group: "Training" },
+  { key: "certification", title: "Certification", bgColor: "bg-[#e91e63]", icon: FaCertificate, group: "Training" },
+  { key: "cvbuild", title: "CV Build", bgColor: "bg-[#6a1b9a]", icon: FaFileAlt, group: "Training" },
+  { key: "mockinterviews", title: "Mock Interviews", bgColor: "bg-[#00bcd4]", icon: FaUserTie, group: "Training" },
+  { key: "liveinterviews", title: "Live Interviews", bgColor: "bg-[#607d8b]", icon: FaUserTie, group: "Placement" },
+  { key: "placement", title: "Placement", bgColor: "bg-[#43a047]", icon: FaBriefcase, group: "Placement" },
+  { key: "placementdue", title: "Placement Due", bgColor: "bg-[#795548]", icon: FaMoneyBillWave, group: "Placement" },
+  { key: "placementpaid", title: "Placement Paid", bgColor: "bg-[#009688]", icon: FaCheckCircle, group: "Placement" },
+  { key: "finishers", title: "Finishers", bgColor: "bg-[#8bc34a]", icon: FaCheckCircle, group: "Completion" },
+  { key: "onhold", title: "On Hold", bgColor: "bg-[#757575]", icon: FaPauseCircle, group: "Other" },
+  { key: "archived", title: "Archived", bgColor: "bg-[#424242]", icon: FaArchive, group: "Other" },
+];
+

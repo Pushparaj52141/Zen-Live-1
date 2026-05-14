@@ -1,0 +1,42 @@
+---
+description: Frontend modules must follow production-grade module layering
+globs: Frontend/src/{modules,features}/**/*
+alwaysApply: false
+---
+
+# Frontend Module Layout
+
+Prefer `Frontend/src/modules/<module-name>/` for all new work.
+
+```txt
+modules/<module-name>/
+  pages/       # route entry screens (thin)
+  components/  # UI only, no API transport
+  hooks/       # orchestration and screen logic
+  services/    # API/http calls only
+  constants/   # maps/options/static values
+  utils/       # pure helpers
+  store/       # optional state slice/query
+  schemas/     # optional validation schemas
+  index.js     # barrel export
+```
+
+## Architecture Rules
+
+- `pages/` compose `hooks/` + `components/`; keep them small.
+- `components/` must not call `fetch`/`apiClient` directly.
+- `hooks/` coordinate UI state + service calls.
+- `services/` are side-effect/data access layer only.
+- Move code to `shared/` only when reused by 2+ modules.
+
+## Naming
+
+- Use lowercase folder names: `components`, `hooks`, `services`, `pages`, `utils`, `constants`.
+- Hooks: `useXxx.js` or `useXxxController.js`.
+- Services: `xxxService.js`.
+- Pages: `XxxPage.jsx`.
+
+## Security Baseline
+
+- Never trust auth/role from `localStorage` or `sessionStorage`.
+- Sanitize rendered rich HTML via `@shared/security/sanitizeHtml`.

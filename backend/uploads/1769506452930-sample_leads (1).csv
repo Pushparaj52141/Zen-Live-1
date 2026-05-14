@@ -1,0 +1,2 @@
+name,mobile_number,email,course_id,status,unit_id,card_type_id,country_code,role_id,college_company,location,source_id,batch_id,trainer_id,actual_fee,discounted_fee,fee_paid,paid_status
+John Doe,9876543210,john@example.com,CRS-DEV-001,enquiry,d1e701cf-a603-4f65-8e3a-52dd6caa357f,ef111d8f-2548-4d79-8858-026782b4f839,91,<optional-role-id>,ABC College,Chennai,<optional-source-id>,<optional-batch-id>,<optional-trainer-id>,50000,45000,0,not paid
