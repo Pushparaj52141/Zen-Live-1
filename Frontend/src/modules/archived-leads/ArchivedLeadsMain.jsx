@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { lazy, Suspense, useCallback, useState } from "react";
 import {
   FiArchive,
   FiSearch,
@@ -13,6 +12,8 @@ import {
 } from "react-icons/fi";
 import { useArchivedLeadsStyles } from "./hooks/useArchivedLeadsStyles";
 import { useArchivedLeadsController } from "./hooks/useArchivedLeadsController";
+
+const EditLeadForm = lazy(() => import("@modules/leads/modals/EditLeadFormWrapper"));
 
 // Format date like "10 Aug 2025, 20:00"
 function formatDateDisplay(dateString) {
@@ -30,7 +31,7 @@ function formatDateDisplay(dateString) {
     return "—";
   }
 }
-function LeadCard({ lead, onUnarchive }) {
+function LeadCard({ lead, onUnarchive, onCardClick }) {
   const formattedName = (lead.name || "").trim();
   const assigneeName = lead.assignee_name || "Unassigned";
   const archivedDate = lead.updated_at || lead.created_at; // Use updated_at as archived date if status is archived
@@ -40,9 +41,22 @@ function LeadCard({ lead, onUnarchive }) {
   const mobileNumber = lead.mobile_number ? `${lead.country_code || ""} ${lead.mobile_number}`.trim() : "—";
   const email = lead.email || "Not provided";
 
+  const handleCardClick = () => {
+    onCardClick?.(lead);
+  };
+
   return (
     <div
-      className="relative bg-white rounded-lg border border-gray-200 shadow-sm group cursor-pointer"
+      role="button"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+      className="relative bg-white rounded-lg border border-gray-200 shadow-sm group cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500/40"
       style={{
         padding: "12px",
         minHeight: "200px",
@@ -110,7 +124,11 @@ function LeadCard({ lead, onUnarchive }) {
 
       {/* Restore Button */}
       <button
-        onClick={() => onUnarchive && onUnarchive(lead)}
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onUnarchive?.(lead);
+        }}
         className="w-full bg-purple-600 hover:bg-purple-700 text-white text-[11px] font-medium py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group-hover:shadow-lg"
       >
         <FiRotateCw className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" />
@@ -122,8 +140,39 @@ function LeadCard({ lead, onUnarchive }) {
 
 export default function ArchivedLeadsMain() {
   useArchivedLeadsStyles();
-  const { leads, loading, error, searchQuery, setSearchQuery, filteredLeads, handleUnarchive } =
-    useArchivedLeadsController();
+  const {
+    leads,
+    loading,
+    error,
+    searchQuery,
+    setSearchQuery,
+    filteredLeads,
+    handleUnarchive,
+    handleRefresh,
+    hasActiveFilters,
+    navbarSearchQuery,
+  } = useArchivedLeadsController();
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedLeadId, setSelectedLeadId] = useState(null);
+
+  const handleCardClick = useCallback((lead) => {
+    const leadId = lead?.lead_id ?? lead?.id ?? null;
+    if (!leadId) return;
+    setSelectedLeadId(leadId);
+    setEditOpen(true);
+  }, []);
+
+  const handleEditClose = useCallback(() => {
+    setEditOpen(false);
+    setSelectedLeadId(null);
+  }, []);
+
+  const handleEditSaved = useCallback(async () => {
+    setEditOpen(false);
+    setSelectedLeadId(null);
+    await handleRefresh();
+  }, [handleRefresh]);
 
   return (
     <div
@@ -149,7 +198,8 @@ export default function ArchivedLeadsMain() {
                 <h1 className="text-3xl md:text-4xl font-bold mb-3">Archived Leads</h1>
                 <p className="text-purple-100 text-sm md:text-base mb-6">
                   Review leads you previously archived and move them back to the Enquiry pipeline whenever
-                  they're ready for a fresh follow-up.
+                  they&apos;re ready for a fresh follow-up. Use the filter icon in the top navbar to filter
+                  by course, trainer, assignee, and more — same as the dashboard.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4 md:gap-6 mb-6">
@@ -160,8 +210,15 @@ export default function ArchivedLeadsMain() {
                   <div>
                     <p className="text-purple-200 text-xs md:text-sm font-medium mb-1">CURRENTLY SHOWING</p>
                     <p className="text-2xl md:text-3xl font-bold">
-                      {loading ? "—" : searchQuery.trim() ? filteredLeads.length : leads.length}
+                      {loading
+                        ? "—"
+                        : searchQuery.trim() || navbarSearchQuery.trim() || hasActiveFilters
+                          ? filteredLeads.length
+                          : leads.length}
                     </p>
+                    {hasActiveFilters && (
+                      <p className="text-purple-200 text-[10px] md:text-xs mt-1">Navbar filters active</p>
+                    )}
                   </div>
                   <button
                     onClick={() => window.history.back()}
@@ -272,7 +329,11 @@ export default function ArchivedLeadsMain() {
                         }}
                       >
                         <div style={{ width: "100%", maxWidth: "280px" }}>
-                          <LeadCard lead={lead} onUnarchive={handleUnarchive} />
+                          <LeadCard
+                            lead={lead}
+                            onUnarchive={handleUnarchive}
+                            onCardClick={handleCardClick}
+                          />
                         </div>
                       </div>
                     ))}
@@ -283,6 +344,24 @@ export default function ArchivedLeadsMain() {
           </div>
         )}
       </div>
+
+      {editOpen && selectedLeadId && (
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+            </div>
+          }
+        >
+          <EditLeadForm
+            key={String(selectedLeadId)}
+            open={editOpen}
+            leadId={selectedLeadId}
+            onClose={handleEditClose}
+            onSaved={handleEditSaved}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

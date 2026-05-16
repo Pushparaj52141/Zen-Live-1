@@ -16,5 +16,6 @@ export const DASHBOARD_STATUS_ORDER = [
   { key: "placementdue", title: "Placement Due", color: "bg-[#795548]" },
   { key: "placementpaid", title: "Placement Paid", color: "bg-[#009688]" },
   { key: "finishers", title: "Finishers", color: "bg-[#8bc34a]" },
+  { key: "jobsupport", title: "Job Support", color: "bg-[#5c6bc0]" },
   { key: "onhold", title: "On Hold", color: "bg-[#757575]" },
 ];

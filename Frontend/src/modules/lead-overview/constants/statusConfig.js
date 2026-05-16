@@ -5,6 +5,7 @@ import {
   FaChalkboardTeacher,
   FaCheckCircle,
   FaFileAlt,
+  FaHandsHelping,
   FaLaptopCode,
   FaMoneyBillWave,
   FaPauseCircle,
@@ -28,6 +29,7 @@ export const STATUS_CONFIG = [
   { key: "placementdue", title: "Placement Due", bgColor: "bg-[#795548]", icon: FaMoneyBillWave, group: "Placement" },
   { key: "placementpaid", title: "Placement Paid", bgColor: "bg-[#009688]", icon: FaCheckCircle, group: "Placement" },
   { key: "finishers", title: "Finishers", bgColor: "bg-[#8bc34a]", icon: FaCheckCircle, group: "Completion" },
+  { key: "jobsupport", title: "Job Support", bgColor: "bg-[#5c6bc0]", icon: FaHandsHelping, group: "Completion" },
   { key: "onhold", title: "On Hold", bgColor: "bg-[#757575]", icon: FaPauseCircle, group: "Other" },
   { key: "archived", title: "Archived", bgColor: "bg-[#424242]", icon: FaArchive, group: "Other" },
 ];

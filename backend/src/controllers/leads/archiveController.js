@@ -83,6 +83,7 @@ exports.restoreLead = async (req, res) => {
     "placementdue",
     "placementpaid",
     "finishers",
+    "jobsupport",
     "onhold",
     "archived",
   ];

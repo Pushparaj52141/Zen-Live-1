@@ -239,6 +239,7 @@ const STATUS_OPTIONS = [
   { value: "placementdue", label: "Placement Due" },
   { value: "placementpaid", label: "Placement Paid" },
   { value: "finishers", label: "Finishers" },
+  { value: "jobsupport", label: "Job Support" },
   { value: "onhold", label: "On Hold" },
 ];
 

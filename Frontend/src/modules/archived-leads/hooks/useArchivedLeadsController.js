@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { ARCHIVED_LEADS_SEARCH_FIELDS } from "../constants/archivedLeadsConstants";
 import { archivedLeadsService } from "../services/archivedLeadsService";
@@ -7,18 +7,36 @@ function includesQuery(value, query) {
   return String(value || "").toLowerCase().includes(query);
 }
 
+function normalizeSearchTerm(term) {
+  return typeof term === "string" ? term.trim().toLowerCase() : "";
+}
+
+function matchesNavbarSearch(lead, query) {
+  if (!query) return true;
+  const name = (lead.name || "").toLowerCase();
+  const mobile = (lead.mobile_number || "").toString();
+  return name.includes(query) || mobile.includes(query);
+}
+
 export function useArchivedLeadsController() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [navbarSearchQuery, setNavbarSearchQuery] = useState("");
+  const [appliedFilters, setAppliedFilters] = useState({});
+  const appliedFiltersRef = useRef(appliedFilters);
 
-  const fetchArchivedLeads = useCallback(async (showErrorAlert = false) => {
+  useEffect(() => {
+    appliedFiltersRef.current = appliedFilters;
+  }, [appliedFilters]);
+
+  const fetchArchivedLeads = useCallback(async (filters = {}, showErrorAlert = false) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await archivedLeadsService.getArchivedLeads();
-      if (res.success === false) {
+      const res = await archivedLeadsService.getArchivedLeads(filters);
+      if (res && res.success === false) {
         setError(res.error);
         setLeads([]);
         if (showErrorAlert) {
@@ -30,7 +48,7 @@ export function useArchivedLeadsController() {
         }
         return;
       }
-      setLeads(res);
+      setLeads(Array.isArray(res) ? res : []);
     } catch (err) {
       const message = err.message || "Failed to fetch archived leads.";
       setError(message);
@@ -48,8 +66,43 @@ export function useArchivedLeadsController() {
   }, []);
 
   useEffect(() => {
-    fetchArchivedLeads(false);
+    fetchArchivedLeads({}, false);
   }, [fetchArchivedLeads]);
+
+  useEffect(() => {
+    function onGlobalFilters(e) {
+      try {
+        const filters = e?.detail || {};
+        setAppliedFilters(filters || {});
+        fetchArchivedLeads(filters || {}, false);
+      } catch {
+        // Silent fail
+      }
+    }
+    if (typeof window !== "undefined" && window.addEventListener) {
+      window.addEventListener("zen:filtersApplied", onGlobalFilters);
+    }
+    return () => {
+      if (typeof window !== "undefined" && window.removeEventListener) {
+        window.removeEventListener("zen:filtersApplied", onGlobalFilters);
+      }
+    };
+  }, [fetchArchivedLeads]);
+
+  useEffect(() => {
+    function onNavbarSearch(event) {
+      const nextQuery = typeof event?.detail === "string" ? event.detail : "";
+      setNavbarSearchQuery(nextQuery);
+    }
+    if (typeof window !== "undefined" && window.addEventListener) {
+      window.addEventListener("zen:leadSearch", onNavbarSearch);
+    }
+    return () => {
+      if (typeof window !== "undefined" && window.removeEventListener) {
+        window.removeEventListener("zen:leadSearch", onNavbarSearch);
+      }
+    };
+  }, []);
 
   const handleUnarchive = useCallback(async (lead) => {
     const result = await Swal.fire({
@@ -107,21 +160,37 @@ export function useArchivedLeadsController() {
   }, []);
 
   const handleRefresh = useCallback(async () => {
-    await fetchArchivedLeads(true);
+    await fetchArchivedLeads(appliedFiltersRef.current, true);
   }, [fetchArchivedLeads]);
 
   const filteredLeads = useMemo(() => {
-    const query = searchQuery.toLowerCase().trim();
-    if (!query) return leads;
+    const pageQuery = normalizeSearchTerm(searchQuery);
+    const navQuery = normalizeSearchTerm(navbarSearchQuery);
 
     return leads.filter((lead) => {
-      const byId = includesQuery(lead.lead_id || lead.id, query);
-      const byConfiguredFields = ARCHIVED_LEADS_SEARCH_FIELDS.some((field) =>
-        includesQuery(lead[field], query)
-      );
-      return byId || byConfiguredFields;
+      const matchesPageSearch =
+        !pageQuery ||
+        includesQuery(lead.lead_id || lead.id, pageQuery) ||
+        ARCHIVED_LEADS_SEARCH_FIELDS.some((field) =>
+          includesQuery(lead[field], pageQuery)
+        ) ||
+        includesQuery(lead.trainer_name, pageQuery) ||
+        includesQuery(lead.source, pageQuery) ||
+        includesQuery(lead.unit_name, pageQuery) ||
+        includesQuery(lead.card_type_name, pageQuery);
+
+      const matchesNavSearch = matchesNavbarSearch(lead, navQuery);
+
+      return matchesPageSearch && matchesNavSearch;
     });
-  }, [leads, searchQuery]);
+  }, [leads, searchQuery, navbarSearchQuery]);
+
+  const hasActiveFilters = useMemo(() => {
+    if (!appliedFilters || typeof appliedFilters !== "object") return false;
+    return Object.values(appliedFilters).some(
+      (value) => Array.isArray(value) && value.length > 0
+    );
+  }, [appliedFilters]);
 
   return {
     leads,
@@ -132,5 +201,8 @@ export function useArchivedLeadsController() {
     filteredLeads,
     handleUnarchive,
     handleRefresh,
+    appliedFilters,
+    hasActiveFilters,
+    navbarSearchQuery,
   };
 }

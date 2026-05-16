@@ -213,6 +213,7 @@ export default function Navbar({
       { value: "placementdue", label: "Placement Due" },
       { value: "placementpaid", label: "Placement Paid" },
       { value: "finishers", label: "Finishers" },
+      { value: "jobsupport", label: "Job Support" },
       { value: "onhold", label: "On Hold" },
       { value: "archived", label: "Archived" },
     ];
@@ -320,6 +321,8 @@ export default function Navbar({
 
   const location = useLocation();
   const isDashboard = location.pathname === "/dashboard";
+  const isArchivedLeads = location.pathname === "/archived";
+  const showPipelineFilters = isDashboard || isArchivedLeads;
 
   return (
     <nav className="fixed left-0 top-0 z-50 w-full border-b bg-white shadow-sm">
@@ -368,8 +371,10 @@ export default function Navbar({
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-3 text-sm text-gray-400 pr-1 sm:pr-0">
-          {isDashboard && (
+          {showPipelineFilters && (
             <>
+              {isDashboard && (
+                <>
               <button
                 onClick={handleUndoClick}
                 title="Undo"
@@ -388,6 +393,8 @@ export default function Navbar({
               >
                 <MdRedo className="h-3 w-4" />
               </button>
+                </>
+              )}
 
               <button
                 onClick={() => setFilterOpen(true)}

@@ -17,7 +17,7 @@ exports.bulkUploadLeads = async (req, res) => {
   const allowedStatuses = new Set([
     "enquiry", "prospect", "enrollment", "trainingprogress", "handsonproject",
     "certification", "cvbuild", "mockinterviews", "liveinterviews",
-    "placement", "placementdue", "placementpaid", "finishers",
+    "placement", "placementdue", "placementpaid", "finishers", "jobsupport",
     "onhold", "archived", "completed",
   ]);
 
